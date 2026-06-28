@@ -12,7 +12,7 @@ spec:
 
   rules:
 
-  - host: pulsepay.example.com
+  - host: ec2-54-163-52-103.compute-1.amazonaws.com
 
     http:
 
