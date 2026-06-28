@@ -1,0 +1,87 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+
+metadata:
+  name: pulsepay-api
+  namespace: pulsepay
+
+spec:
+  replicas: 5
+
+  revisionHistoryLimit: 5
+
+  selector:
+    matchLabels:
+      app: pulsepay-api
+
+  template:
+    metadata:
+      labels:
+        app: pulsepay-api
+
+    spec:
+      containers:
+      - name: pulsepay-api
+
+        image: gangadhar/pulsepay-api:v1
+
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 80
+
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 10
+
+  strategy:
+
+    canary:
+
+      stableService: pulsepay-api-stable
+
+      canaryService: pulsepay-api-canary
+
+      trafficRouting:
+
+        nginx:
+
+          stableIngress: pulsepay-api
+
+      steps:
+
+      - setWeight: 20
+
+      - pause:
+          duration: 30s
+
+      - setWeight: 50
+
+      - pause:
+          duration: 30s
+
+      - setWeight: 80
+
+      - pause:
+          duration: 30s
+
+      - setWeight: 100
