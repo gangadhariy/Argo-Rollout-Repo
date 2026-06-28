@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+
+metadata:
+  name: pulsepay-api
+  namespace: pulsepay
+
+spec:
+
+  ingressClassName: nginx
+
+  rules:
+
+  - host: pulsepay.example.com
+
+    http:
+
+      paths:
+
+      - path: /
+
+        pathType: Prefix
+
+        backend:
+
+          service:
+
+            name: pulsepay-api-stable
+
+            port:
+
+              number: 80
