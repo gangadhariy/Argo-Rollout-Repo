@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kanban-api-active
+  namespace: middleware
+
+spec:
+  selector:
+    app: kanban-api
+
+  ports:
+  - port: 8000
+    targetPort: 8000

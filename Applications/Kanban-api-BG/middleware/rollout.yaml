@@ -1,0 +1,68 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: kanban-api
+  namespace: middleware
+spec:
+  replicas: 3
+
+  revisionHistoryLimit: 3
+
+  selector:
+    matchLabels:
+      app: kanban-api
+
+  template:
+    metadata:
+      labels:
+        app: kanban-api
+    spec:
+      containers:
+      - name: api
+        image: gangadhariy/kanban:v2
+        imagePullPolicy: Always
+
+        ports:
+        - containerPort: 8000
+
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: DB_HOST
+
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: DB_PORT
+
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-config
+              key: DB_NAME
+
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: username
+
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+
+  strategy:
+    blueGreen:
+      activeService: kanban-api-active
+      previewService: kanban-api-preview
+
+      autoPromotionEnabled: false
+
+      previewReplicaCount: 3
+
+      scaleDownDelaySeconds: 30
