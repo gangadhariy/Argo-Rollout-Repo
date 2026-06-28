@@ -23,7 +23,7 @@ spec:
       containers:
       - name: pulsepay-api
 
-        image: gangadhariy/mesh:green
+        image: gangadhariy/mesh:blue
 
         imagePullPolicy: Always
 
