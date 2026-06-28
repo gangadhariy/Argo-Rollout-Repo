@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - Namespace.yaml
+  - configmap.yaml
   - rollout.yaml
   - active-service.yaml
   - preview-service.yaml
