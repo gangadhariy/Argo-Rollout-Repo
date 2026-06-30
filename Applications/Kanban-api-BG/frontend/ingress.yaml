@@ -9,7 +9,7 @@ spec:
   ingressClassName: nginx
 
   rules:
-  - host: ec2-54-163-52-103.compute-1.amazonaws.com
+  - host: ec2-54-167-15-232.compute-1.amazonaws.com
 
     http:
       paths:
