@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gangadhariy/kanban-frontend:8
+        image: gangadhariy/kanban-frontend:15
         imagePullPolicy: Always
 
         ports:
